@@ -2,7 +2,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Artikel') }}
         </h2>
     </x-slot>
 
@@ -26,8 +26,9 @@
                           <tr>
                               <th>No</th>
                               <th>Gambar</th>
+                              {{-- <th>Gambar</th> --}}
                               <th>Judul</th>
-                              <th>Isi</th>
+                              <th>Tanggal</th>
                               <th width="100px">Action</th>
                           </tr>
                       </thead>
@@ -54,21 +55,10 @@
   serverSide: true,
   ajax: "{{ url('artikel') }}",
   columns: [
-  { data: 'id', name: 'id' },
-  {data: 'gambar', name: 'gambar',
-  render:function(data, type, row){
-    // return "<img src='/users/"+ row.gambar +"'>" + row.gambar + "</a>"
-    return '<img src="/users/'+ row.gambar +'">' + row.gambar + '</a>'
-
-}},
-//   "render": function (data, type, full, meta) {
-//         return '<img src="u"'+ data +'"o" height="50"/>';
-//     }},
-                    // render: function (data) {        
-                    // return '<a href="{{ URL::asset("storage/gambar/'+ name +'") }}"><img src=" {{ URL::asset("storage/gambar/'+ name +'") }} " width="50px"/><a>' }},
-                
+  {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+  { data: 'image', name: 'image' },
   { data: 'judul', name: 'judul' },
-  { data: 'isi', name: 'isi' },
+  { data: 'tanggal', name: 'tanggal' },
   {data: 'action', name: 'action', orderable: false},
   ],
   order: [[0, 'desc']]

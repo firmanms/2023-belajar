@@ -4,7 +4,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Artikel') }}
         </h2>
     </x-slot>
 
@@ -51,16 +51,14 @@
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
                               Gambar
                             </label>
-                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="file" placeholder="Albuquerque">
+                            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="gambar" id="grid-city" type="file" placeholder="Albuquerque">
                             @error('gambar')
                             <p class="text-red-500 text-xs italic">{{ $message }}</p>
                             @enderror
                            </div>
                         </div>   
-                        <a href="{{ route('artikel.create') }}" data-toggle="tooltip" data-original-title="Tambah" class="Tambah btn btn-success Tambah">
-                            Tambah
-                            </a>               
-                        <button type="submit" class="Tambah btn btn-success">Submit</button>
+                                    
+                        <button type="submit" class="btn btn-warning">Ubah</button>
                       </form>
                 </div>
             </div>

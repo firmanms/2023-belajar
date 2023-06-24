@@ -16,11 +16,19 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
+            @if (Auth::user()->role=='admin')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('artikel.index')" :active="request()->routeIs('artikel.index')">
                         {{ __('Artikel') }}
                     </x-nav-link>
-                </div>
+                </div>       
+            @endif
+            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <x-nav-link :href="route('komentar.index')" :active="request()->routeIs('komentar.index')">
+                    {{ __('Komentar') }}
+                </x-nav-link>
+            </div>
+                
             </div>
 
             <!-- Settings Dropdown -->

@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ArtikelController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,9 +18,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('frontend.index');
+// });
+
+//frontend
+Route::get('/', [FrontendController::class,'index']);
+Route::get('/blog', [FrontendController::class,'blog'])->name('blog');
+Route::get('/baca/{slug}', [FrontendController::class, 'singleblog'])->name('artikel.read');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -27,15 +36,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::resource('komentar', KomentarController::class);
+    Route::post('/submitkomentar', [ArtikelController::class,'comment']);
+    Route::resource('artikel_member', DashboardController::class);
+    Route::post('delete-komentar', [KomentarController::class,'destroy']);
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('artikel', ArtikelController::class);
-    // Route::get('/artikel', [ArtikelController::class, 'index'])->name('artikel.index');
-    // Route::get('/artikel/create', [ArtikelController::class,'create'])->name('artikel.create');
-    // Route::post('/artikel/store', [ArtikelController::class,'store'])->name('artikel.store');
-    // Route::patch('/artikel{id}', [ArtikelController::class,'update'])->name('artikel.edit');
     Route::post('delete-artikel', [ArtikelController::class,'destroy']);
+    
 });
 
 Route::get('admin', function () {

@@ -3,37 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artikel;
+use App\Models\Komentar;
 use App\Models\User;
 use Illuminate\Http\Request;
 use DataTables;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ArtikelController extends Controller
 {
-    // public function index(Request $request)
-    // {
-    //     if ($request->ajax()) {
-    //         $data = Artikel::latest()->get();
-    //         return Datatables::of($data)
-    //                 ->addIndexColumn()
-    //                 ->addColumn('action', function($row){
-   
-    //                        $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
-     
-    //                         return $btn;
-    //                 })
-    //                 ->rawColumns(['action'])
-    //                 ->make(true);
-    //     }
-      
-    //     return view('list-artikel');
-    // }
     public function index()
     {
+        // $artikel = Artikel::with('users')->latest()->get();
+        // dd($artikel);
         if(request()->ajax()) {
-            return datatables()->of(Artikel::select('*'))
+            $artikel = Artikel::with('users')->latest()->get();
+            // dd($artikel);
+            return datatables()->of($artikel)
+            ->addColumn('image', function ($artikel) {
+                $url= url('storage/gambar/'.$artikel->gambar);
+                return '<img src="'.$url.'" border="0" width="100" class="img-rounded" align="center" />';
+            })
+            ->addColumn('tanggal', function ($artikel) {
+                $updatenya= date_format($artikel->updated_at,"d/m/Y");
+                return $updatenya ;
+            })
             ->addColumn('action', 'artikel.action')
-            ->rawColumns(['action'])
+            ->rawColumns(['image','tanggal','action'])
             ->addIndexColumn()
             ->make(true);
             }
@@ -63,18 +59,16 @@ class ArtikelController extends Controller
         'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         
         ]);
-        if ($gambar = $request->file('gambar')) {
-            $destinationPath = 'gambar/';
-            $profileGambar = date('YmdHis') . "." . $gambar->getClientOriginalExtension();
-            $gambar->move($destinationPath, $profileGambar);
-            $inputgambar['gambar'] = "$profileGambar";
-        }
+ 
+        //upload image
+        $gambar = $request->file('gambar');
+        $gambar->storeAs('public/gambar', $gambar->hashName());
         // dd($profileGambar);
         $artikel = new Artikel();
         $artikel->judul = $request->judul;
         $artikel->slug = Str::slug($request->judul);
         $artikel->isi = $request->isi;
-        $artikel->gambar = $profileGambar;
+        $artikel->gambar = $gambar->hashName();
         $artikel->save();
         // dd($inputgambar);
         return redirect()->route('artikel.index')
@@ -86,9 +80,11 @@ class ArtikelController extends Controller
     * @param  \App\artikel  $artikel
     * @return \Illuminate\Http\Response
     */
-    public function show(Artikel $artikel)
+    public function show($id)
     {
-    return view('artikel.show',compact('artikel'));
+        $artikel = Artikel::with(['users','komentarnya','komentars', 'komentars.child'])->where('id', $id)->first();
+        // dd($artikel);
+        return view('artikel.show', compact('artikel'));
     } 
     /**
     * Show the form for editing the specified resource.
@@ -109,17 +105,44 @@ class ArtikelController extends Controller
     */
     public function update(Request $request, $id)
     {
+        
     $request->validate([
     'judul' => 'required',
     'isi' => 'required',
+    'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+
     // 'address' => 'required'
     ]);
-    $artikel = Artikel::find($id);
-    $artikel->judul = $request->judul;
-    $artikel->slug = Str::slug($request->judul);
-    $artikel->isi = $request->isi;
-    $artikel->gambar = $request->judul;
-    $artikel->save();
+
+    $artikel = Artikel::findOrFail($id);
+    
+    if($request->file('gambar') == "") {
+
+        $artikel->update([
+            'judul' => $request->judul,
+            'slug' => Str::slug($request->judul),
+            'isi' => $request->isi,
+        ]);
+
+    } else {
+
+        //hapus old image
+        Storage::disk('local')->delete('public/gambar/'.$artikel->gambar);
+
+        //upload new image
+        $gambar = $request->file('gambar');
+        $gambar->storeAs('public/gambar', $gambar->hashName());
+
+        $artikel->update([
+            
+            'judul'     => $request->judul,
+            'slug'      => Str::slug($request->judul),
+            'isi'       => $request->isi,
+            'gambar'    => $gambar->hashName(),
+        ]);
+
+    }
+
     return redirect()->route('artikel.index')
     ->with('success','artikel Has Been updated successfully');
     }
@@ -133,5 +156,22 @@ class ArtikelController extends Controller
     {
     $com = Artikel::where('id',$request->id)->delete();
     return Response()->json($com);
+    }
+    public function comment(Request $request)
+    {
+            //VALIDASI DATA YANG DITERIMA
+            $this->validate($request, [
+                
+                'komentar' => 'required'
+            ]);
+
+            Komentar::create([
+                'artikel_id' => $request->id,
+                //JIKA PARENT ID TIDAK KOSONG, MAKA AKAN DISIMPAN IDNYA, SELAIN ITU NULL
+                'parent_id' => $request->parent_id != '' ? $request->parent_id:NULL,
+                'user_id' => $request->user_id,
+                'komentar' => $request->komentar
+            ]);
+        return redirect()->back()->with(['success' => 'Komentar Ditambahkan']);
     }
 }
