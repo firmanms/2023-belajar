@@ -12,3 +12,5 @@
 user admin
 user: admin@mail.com
 Pass:password
+
+*wajib terkoneksi internet karena beberapa asset CSS dan JS pakai online tidak yang offline
