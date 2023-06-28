@@ -9,15 +9,15 @@ use Illuminate\Http\Request;
 class FrontendController extends Controller
 {
     public function index(){
-        $blog=Artikel::all()->take(9);
+        $blog=Artikel::orderby('updated_at','desc')->get()->take(9);
         return view('frontend.index',compact('blog'));
     }
     public function blog()
     {
         //blog
-        $artikels = Artikel::with(['users','komentarnya','komentars', 'komentars.child'])->paginate(10);
+        $artikels = Artikel::orderby('updated_at','desc')->with(['users','komentarnya','komentars', 'komentars.child'])->paginate(10);
         //blogrecent
-        $artikelrecents = Artikel::get()->take(5);
+        $artikelrecents = Artikel::orderby('updated_at','desc')->get()->take(5);
         return view('frontend.blog',compact('artikels','artikelrecents'));
     }
     public function singleblog($slug)
@@ -31,7 +31,7 @@ class FrontendController extends Controller
         // dd($hitung_komentar);
         
         //artikelrecent
-        $artikelrecents = Artikel::get()->take(5);
+        $artikelrecents = Artikel::orderby('updated_at','desc')->get()->take(5);
 
         return view('frontend.singleblog',compact('artikel','artikelrecents','hitung_komentar'));
     }

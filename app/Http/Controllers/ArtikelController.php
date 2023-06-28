@@ -17,7 +17,7 @@ class ArtikelController extends Controller
         // $artikel = Artikel::with('users')->latest()->get();
         // dd($artikel);
         if(request()->ajax()) {
-            $artikel = Artikel::with('users')->latest()->get();
+            $artikel = Artikel::orderby('updated_at','desc')->with('users')->latest()->get();
             // dd($artikel);
             return datatables()->of($artikel)
             ->addColumn('image', function ($artikel) {
