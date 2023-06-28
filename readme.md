@@ -7,7 +7,9 @@
 8. php artisan optimize
 9. php artisan route:clear
 10. php artisan storage:link
-11. Buka URL  Aplikasi nya
+11. npm install
+12. npm run dev
+13. Buka URL  Aplikasi nya
 
 user admin
 user: admin@mail.com

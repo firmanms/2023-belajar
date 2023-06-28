@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>FlexStart Bootstrap Template - Index</title>
+  <title>News Tech</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -28,13 +28,7 @@
   <link href="{{ asset('frontend/assets/css/style.css')}}" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
 
-  <!-- =======================================================
-  * Template Name: FlexStart
-  * Updated: Jun 19 2023 with Bootstrap v5.3.0
-  * Template URL: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+  
 </head>
 
 <body>
@@ -45,27 +39,27 @@
 
       <a href="{{ url('/') }}" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
-        <span>FlexStart</span>
+        <span>Ars NewsTech</span>
       </a>
 
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="nav-link scrollto active" href="{{ url('/') }}">Home</a></li>          
-          <li><a href="{{ route('blog') }}">Blog</a></li>
+          <li><a href="{{ route('blog') }}">Artikel</a></li>
           @if (Route::has('login'))
                 
                     @auth
                     <li><a href="{{ url('/dashboard') }}" class="getstarted scrollto">Dashboard</a></li>
                     @else
-                    <li><a href="{{ route('login') }}" class="getstarted scrollto">Log in</a></li>
+                    <li><a href="{{ route('login') }}" class="getstarted scrollto">MASUK</a></li>
 
                         @if (Route::has('register'))
-                        <li><a href="{{ route('register') }}" class="ml-4 getstarted scrollto">Register</a></li>
+                        <li><a href="{{ route('register') }}" class="ml-4 getstarted scrollto">DAFTAR</a></li>
                         @endif
                     @endauth
                 
             @endif
-          {{-- <li><a class="getstarted scrollto" href="#about">Login</a></li> --}}
+      
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -86,14 +80,11 @@
 
     <div class="container">
       <div class="copyright">
-        &copy; Copyright <strong><span>FlexStart</span></strong>. All Rights Reserved
+        &copy; Copyright <strong><span>WEBPRAKTISIKELOMPOK</span></strong>.
       </div>
       <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/flexstart-bootstrap-startup-template/ -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+   
+      
       </div>
     </div>
   </footer><!-- End Footer -->

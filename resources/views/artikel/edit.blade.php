@@ -24,6 +24,7 @@
                             @method('PUT')
                         <div class="flex flex-wrap -mx-3 mb-3">
                           <div class="w-full md:w-1/2 px-3 mb-3 md:mb-0">
+                            <input type="hidden" value="{{ Auth::user()->id }}" name="user_id">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                               Judul
                             </label>

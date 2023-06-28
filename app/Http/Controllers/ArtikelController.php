@@ -54,6 +54,7 @@ class ArtikelController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+        'user_id' => '',
         'judul' => 'required',
         'isi' => 'required',
         'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -65,6 +66,7 @@ class ArtikelController extends Controller
         $gambar->storeAs('public/gambar', $gambar->hashName());
         // dd($profileGambar);
         $artikel = new Artikel();
+        $artikel->user_id = $request->user_id;
         $artikel->judul = $request->judul;
         $artikel->slug = Str::slug($request->judul);
         $artikel->isi = $request->isi;
@@ -107,6 +109,7 @@ class ArtikelController extends Controller
     {
         
     $request->validate([
+    'user_id'=>'',
     'judul' => 'required',
     'isi' => 'required',
     'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -119,6 +122,7 @@ class ArtikelController extends Controller
     if($request->file('gambar') == "") {
 
         $artikel->update([
+            'user_id' => $request->user_id,
             'judul' => $request->judul,
             'slug' => Str::slug($request->judul),
             'isi' => $request->isi,
